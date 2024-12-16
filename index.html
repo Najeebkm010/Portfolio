@@ -511,35 +511,80 @@
 				</div>
 					
 				<script>
-					// Set the form action URL from the environment variable
-					const form = document.getElementById("contactForm");
-					const formActionUrl = process.env.FORM_ACTION_URL; // Vercel environment variable
-					
-					if (formActionUrl) {
-					form.action = formActionUrl;
-					} else {
-					console.error("Form action URL is not defined.");
-					}
-					
-					form.addEventListener("submit", function(event) {
-					event.preventDefault(); // Prevent default form submission
-					
-					const formData = new FormData(form);
-					
-					fetch(form.action, {
-					method: 'POST',
-					body: formData
-					})
-					.then(response => response.text())
-					.then(data => {
-					//alert("Message sent successfully!");
-					form.reset(); // Optionally reset the form after submission
-					})
-					.catch(error => {
-					//alert("There was an error submitting your form.");
-					console.error('Error:', error);
-					});
-					});
+					// Encryption and Decryption Utility
+const CryptoJS = require('crypto-js');
+
+// Function to decrypt the URL
+function decryptUrl(encryptedUrl) {
+    // Retrieve the key from environment variables
+    const secretKey = process.env.ENCRYPTION_KEY;
+    
+    if (!secretKey) {
+        console.error('Encryption key is not set');
+        return null;
+    }
+
+    try {
+        // Decrypt the URL
+        const bytes = CryptoJS.AES.decrypt(encryptedUrl, secretKey);
+        const decryptedUrl = bytes.toString(CryptoJS.enc.Utf8);
+        
+        if (!decryptedUrl) {
+            console.error('Decryption failed');
+            return null;
+        }
+        
+        return decryptedUrl;
+    } catch (error) {
+        console.error('Decryption error:', error);
+        return null;
+    }
+}
+
+// Form submission handler
+document.getElementById("contactForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const form = event.target;
+    const formData = new FormData(form);
+
+    // Encrypted URL (this would be in your HTML/JS)
+    const encryptedFormActionUrl = '4sIvCR0q7ir2s1WdiCfo5Oux4sWwDpRimxGra9G0IboGo72lFuYEFalhCkCrquvFofouYT6C5c9qibL9Q+Xhtf+FFvZEJ69ySQvS18xty2S4PUbErc81bxr2mQHoKpFaz1Q3+IGZ+aXv0S4xr4trL0+yjn2dBWtHtcDBdJPd1Zo=';
+
+    // Decrypt the URL
+    const formActionUrl = decryptUrl(encryptedFormActionUrl);
+
+    if (!formActionUrl) {
+        alert('Unable to process form submission');
+        return;
+    }
+
+    fetch(formActionUrl, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (response.ok) {
+            alert("Message sent successfully!");
+            form.reset();
+        } else {
+            throw new Error('Network response was not ok');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert("There was an error submitting your form. Please try again.");
+    });
+});
+
+// Encryption Utility (for your reference, to be used separately)
+function encryptUrl(url, secretKey) {
+    return CryptoJS.AES.encrypt(url, secretKey).toString();
+}
+
+// Example of how to encrypt (do this separately, not in client-side code)
+// const originalUrl = 'https://your-form-submission-endpoint.com';
+// const encryptedUrl = encryptUrl(originalUrl, process.env.ENCRYPTION_KEY);
 				</script>
 				<div class="col-md-5 pl-md-5">
 					<h3 class="mb-5">My Contact Details</h3>
