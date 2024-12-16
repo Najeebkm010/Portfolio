@@ -490,49 +490,57 @@
 				</div>
 
 				<div class="col-md-7 mb-5 mb-md-0">
-					<form action="https://script.google.com/macros/s/AKfycby6vo7BwCG0P_2VKaFM7WQapOFCGj4dIbVd7AefpRNXr7WlA7y7XxYQHEXKL_G3xQl-ow/exec" method="POST" class="site-form" id="contactForm">
-					  <h3 class="mb-5">Get In Touch</h3>
-					  <div class="form-group">
-						<input type="text" class="form-control px-3 py-4" name="name" placeholder="Your Name" required>
-					  </div>
-					  <div class="form-group">
-						<input type="email" class="form-control px-3 py-4" name="email" placeholder="Your Email" required>
-					  </div>
-					  <div class="form-group">
-						<input type="tel" class="form-control px-3 py-4" name="phone" placeholder="Your Phone" required>
-					  </div>
-					  <div class="form-group mb-5">
-						<textarea class="form-control px-3 py-4" name="message" cols="30" rows="10" placeholder="Write a Message" required></textarea>
-					  </div>
-					  <div class="form-group">
-						<input type="submit" class="btn btn-primary px-4 py-3" value="Send Message">
-					  </div>
+  					<form method="POST" class="site-form" id="contactForm">
+	    					<h3 class="mb-5">Get In Touch</h3>
+	   					<div class="form-group">
+	     				 		<input type="text" class="form-control px-3 py-4" name="name" placeholder="Your Name" required>
+	   			 		</div>
+	    					<div class="form-group">
+	      						<input type="email" class="form-control px-3 py-4" name="email" placeholder="Your Email" required>
+	    					</div>
+						<div class="form-group">
+							<input type="tel" class="form-control px-3 py-4" name="phone" placeholder="Your Phone" required>
+						</div>
+						<div class="form-group mb-5">
+						      <textarea class="form-control px-3 py-4" name="message" cols="30" rows="10" placeholder="Write a Message" required></textarea>
+						</div>
+						<div class="form-group">
+						      <input type="submit" class="btn btn-primary px-4 py-3" value="Send Message">
+						</div>
 					</form>
-				  </div>
-				  
-				  <script>
-					// Optional: Handle form submission with JavaScript
+				</div>
+					
+				<script>
+					// Set the form action URL from the environment variable
 					const form = document.getElementById("contactForm");
+					const formActionUrl = process.env.FORM_ACTION_URL; // Vercel environment variable
+					
+					if (formActionUrl) {
+					form.action = formActionUrl;
+					} else {
+					console.error("Form action URL is not defined.");
+					}
+					
 					form.addEventListener("submit", function(event) {
-					  event.preventDefault(); // Prevent default form submission
-				  
-					  const formData = new FormData(form);
-				  
-					  fetch(form.action, {
-						method: 'POST',
-						body: formData
-					  })
-					  .then(response => response.text())
-					  .then(data => {
-						//alert("Message sent successfully!");
-						form.reset(); // Optionally reset the form after submission
-					  })
-					  .catch(error => {
-						//alert("There was an error submitting your form.");
-						console.error('Error:', error);
-					  });
+					event.preventDefault(); // Prevent default form submission
+					
+					const formData = new FormData(form);
+					
+					fetch(form.action, {
+					method: 'POST',
+					body: formData
+					})
+					.then(response => response.text())
+					.then(data => {
+					//alert("Message sent successfully!");
+					form.reset(); // Optionally reset the form after submission
+					})
+					.catch(error => {
+					//alert("There was an error submitting your form.");
+					console.error('Error:', error);
 					});
-				  </script>
+					});
+				</script>
 				<div class="col-md-5 pl-md-5">
 					<h3 class="mb-5">My Contact Details</h3>
 					<ul class="site-contact-details">
