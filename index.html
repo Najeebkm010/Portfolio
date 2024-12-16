@@ -509,36 +509,35 @@
 						</div>
 					</form>
 				</div>
-					
 				<script>
 					// Recommended form submission script
-document.getElementById("contactForm").addEventListener("submit", function(event) {
-    event.preventDefault(); // Prevent default form submission
+					document.getElementById("contactForm").addEventListener("submit", function(event) {
+					event.preventDefault(); // Prevent default form submission
 
-    const form = event.target;
-    const formData = new FormData(form);
+					const form = event.target;
+					const formData = new FormData(form);
 
-    // Replace with your actual form submission endpoint
-    const formActionUrl = 'https://script.google.com/macros/s/AKfycby6vo7BwCG0P_2VKaFM7WQapOFCGj4dIbVd7AefpRNXr7WlA7y7XxYQHEXKL_G3xQl-ow/exec';
-    
-    fetch(formActionUrl, {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => {
-        if (response.ok) {
-            alert("Message sent successfully!");
-            form.reset(); // Reset the form after successful submission
-        } else {
-            throw new Error('Network response was not ok');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert("There was an error submitting your form. Please try again.");
-    });
-});
-				</script>
+					// Replace with your actual form submission endpoint
+					const formActionUrl = 'https://script.google.com/macros/s/AKfycby6vo7BwCG0P_2VKaFM7WQapOFCGj4dIbVd7AefpRNXr7WlA7y7XxYQHEXKL_G3xQl-ow/exec';
+					
+					fetch(formActionUrl, {
+						method: 'POST',
+						body: formData
+					})
+					.then(response => {
+						if (response.ok) {
+							alert("Message sent successfully!");
+							form.reset(); // Reset the form after successful submission
+						} else {
+							throw new Error('Network response was not ok');
+						}
+					})
+					.catch(error => {
+						console.error('Error:', error);
+						alert("There was an error submitting your form. Please try again.");
+					});
+					});
+			  	</script>
 				<div class="col-md-5 pl-md-5">
 					<h3 class="mb-5">My Contact Details</h3>
 					<ul class="site-contact-details">
